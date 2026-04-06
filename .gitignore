@@ -1,55 +1,77 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Monorepo (Turborepo) - Next.js + NestJS
 
 # Dependencies
-node_modules
+node_modules/
 .pnp
 .pnp.js
 
-# Local env files
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Testing
-coverage
-
-# Turbo
-.turbo
-
-# Vercel
-.vercel
-
-# Build Outputs
+# Build outputs
 .next/
 out/
-build
-dist
+dist/
+build/
 
-# Next.js (generated)
-next-env.d.ts
+# Turbo / deployment
+.turbo/
+.vercel/
 
-# TypeScript (incremental build)
-*.tsbuildinfo
+# Tests
+coverage/
+.nyc_output/
 
 # Tool caches
 .eslintcache
 .stylelintcache
 
-
-# Debug
+# Logs
+logs/
+*.log
 npm-debug.log*
+pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
-*.log
+lerna-debug.log*
 
-# Misc
+# Env files (keep templates tracked)
+.env*
+!.env.example
+!.env.sample
+!.env.template
+
+# TypeScript / Next.js generated
+*.tsbuildinfo
+next-env.d.ts
+
+# Temp
+.tmp/
+.temp/
+
+# OS
 .DS_Store
 *.pem
 
-# Editor/IDE
-.vscode/
+# IDEs and editors
 .idea/
 *.iml
+.project
+.classpath
+.settings/
+.c9/
+*.launch
+*.sublime-workspace
+
+# VS Code (ignore workspace noise, keep shared config)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Diagnostic reports
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
