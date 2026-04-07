@@ -4,9 +4,8 @@
   "type": "module",
   "private": true,
   "exports": {
-    "./base": "./base.js",
-    "./next-js": "./next.js",
-    "./react-internal": "./react-internal.js"
+    "./api": "./api.js",
+    "./web": "./web.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

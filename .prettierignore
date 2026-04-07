@@ -1,0 +1,7 @@
+.next
+dist
+coverage
+node_modules
+.turbo
+apps/**/.next
+apps/**/dist

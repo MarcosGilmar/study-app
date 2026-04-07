@@ -15,11 +15,6 @@ Projeto para organizar estudos (monorepo).
 - [apps/web](apps/web) — aplicação web (Next.js)
 - [apps/api](apps/api) — API (NestJS)
 
-## Requisitos
-
-- Node.js `>= 18`
-- npm (o repo está configurado com `packageManager: npm@10.9.2`)
-
 ## Como rodar
 
 Instalar dependências na raiz do monorepo:
