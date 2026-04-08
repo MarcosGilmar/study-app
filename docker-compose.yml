@@ -1,0 +1,13 @@
+services:
+  postgres:
+    container_name: study_postgres
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: study-db
+      PGDATA: /data/postgres
+    volumes:
+      - ./docker/postgres/data:/data/postgres
