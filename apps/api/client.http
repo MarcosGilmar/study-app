@@ -1,4 +1,5 @@
 @baseUrl = http://localhost:3333
+@authToken = eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Y2NhNzRlZS1iYjIyLTQ0YzQtOWQ3NS00NDE4MGViZDk2NmMiLCJpYXQiOjE3NzY4Nzk2Mjl9.Q9KtVPWlhqvkkur9tYeBB7IelsQZVmU35IE1Edhp40bc3NOVThMVgj6catwSHIkPfrTgZwdqykarkMj-SG3jUMBV2101Q2HnHR8k4Pb-qWIhnBYJMacHJKPgOCV9VkazozF-Zpr9oy-wPGrGXJFGWm-FH6ZpIbKGLVk5kNtfP-knzVwNZ3fPnY8jUjwiFtMhNrahU133l3Chq8MYL1IkWjcj5U-gm0DMtu8QFGUypLDn8hDluDjB8UUZGypf_N6_OBKlzuB3WTRw7SPIXPTyZ8whD_Lvlx02jZlnau5VNxUnTpgV9GgnjKom8hy24j6gl1_StlWtDuQCgPbQx2A20Q
 
 # @name create_account
 POST {{baseUrl}}/accounts
@@ -19,4 +20,15 @@ Content-Type: application/json
 {
     "email": "marcos@gmail.com",
     "password": "12345678"
+}
+
+###
+
+# @name create_subjects
+POST {{baseUrl}}/subjects
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "NestJS"
 }
