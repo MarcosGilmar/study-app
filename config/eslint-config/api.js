@@ -8,7 +8,7 @@ import tseslint from 'typescript-eslint';
  *
  * @type {import('eslint').Linter.Config[]}
  */
-export const apiConfig = tseslint.config(
+export const apiConfig = tseslint.defineConfig(
   {
     ignores: ['eslint.config.mjs'],
   },
@@ -19,7 +19,6 @@ export const apiConfig = tseslint.config(
     languageOptions: {
       globals: {
         ...globals.node,
-        ...globals.jest,
       },
       sourceType: 'commonjs',
       parserOptions: {

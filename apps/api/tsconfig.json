@@ -4,8 +4,6 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
-    "module": "Node16",
-    "moduleResolution": "node16",
     "target": "ES2023",
     "strict": true,
     "esModuleInterop": true
