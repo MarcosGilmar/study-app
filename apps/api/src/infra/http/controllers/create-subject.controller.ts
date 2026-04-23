@@ -5,11 +5,11 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { CurrentUser } from 'src/auth/current-user-decorator';
-import { JwtAuthGuard } from 'src/auth/jwt.auth.guard';
-import type { TokenPayloadSchema } from 'src/auth/jwt.strategy';
-import { ZodValidationPipe } from 'src/pipes/zod-validation-pipe';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { CurrentUser } from 'src/infra/auth/current-user-decorator';
+import { JwtAuthGuard } from 'src/infra/auth/jwt.auth.guard';
+import type { TokenPayloadSchema } from 'src/infra/auth/jwt.strategy';
+import { PrismaService } from 'src/infra/database/prisma/prisma.service';
+import { ZodValidationPipe } from 'src/infra/http/pipes/zod-validation-pipe';
 import z from 'zod';
 
 const createSubjectBodySchema = z.object({
