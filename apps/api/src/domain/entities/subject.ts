@@ -19,4 +19,8 @@ export class Subject extends Entity<SubjectProps> {
       id,
     );
   }
+
+  get name() {
+    return this.props.name;
+  }
 }
