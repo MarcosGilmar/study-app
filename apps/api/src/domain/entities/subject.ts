@@ -1,24 +1,22 @@
-import { randomUUID } from 'node:crypto';
+import { Entity } from 'src/core/entities/entity';
+import { Optional } from 'src/core/types/optional';
 
 export interface SubjectProps {
   name: string;
-  userId: string;
-  createdAt?: Date;
+  userId: string; //talvez mudar para UniqueEntityId
+  createdAt: Date;
+  updatedAt?: Date;
 }
 
-export class Subject {
-  private readonly _id: string;
-  private props: SubjectProps;
-
+export class Subject extends Entity<SubjectProps> {
   private constructor(props: SubjectProps, id?: string) {
-    this._id = id ?? randomUUID();
-    this.props = {
-      ...props,
-      createdAt: props.createdAt ?? new Date(),
-    };
+    super(props, id);
   }
 
-  static create(props: SubjectProps, id?: string) {
-    return new Subject(props, id);
+  static create(props: Optional<SubjectProps, 'createdAt'>, id?: string) {
+    return new Subject(
+      { ...props, createdAt: props.createdAt ?? new Date() },
+      id,
+    );
   }
 }

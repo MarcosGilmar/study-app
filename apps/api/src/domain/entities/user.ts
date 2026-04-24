@@ -1,25 +1,19 @@
-import { randomUUID } from 'node:crypto';
+import { Entity } from 'src/core/entities/entity';
+import { Optional } from 'src/core/types/optional';
 
 export interface UserProps {
   name: string;
   email: string;
   password: string;
-  createdAt?: Date;
+  createdAt: Date;
 }
 
-export class User {
-  private readonly _id: string;
-  private props: UserProps;
-
+export class User extends Entity<UserProps> {
   private constructor(props: UserProps, id?: string) {
-    this._id = id ?? randomUUID();
-    this.props = {
-      ...props,
-      createdAt: props.createdAt ?? new Date(),
-    };
+    super(props, id);
   }
 
-  static create(props: UserProps, id?: string) {
-    return new User(props, id);
+  static create(props: Optional<UserProps, 'createdAt'>, id?: string) {
+    return new User({ ...props, createdAt: props.createdAt ?? new Date() }, id);
   }
 }
