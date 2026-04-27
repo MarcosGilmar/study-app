@@ -6,10 +6,10 @@ import { EnvSchema } from 'src/env';
 import z from 'zod';
 
 const tokenPayloadSchema = z.object({
-    sub: z.uuid(),
-})
+  sub: z.uuid(),
+});
 
-export type TokenPayloadSchema = z.infer<typeof tokenPayloadSchema>
+export type TokenPayloadSchema = z.infer<typeof tokenPayloadSchema>;
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

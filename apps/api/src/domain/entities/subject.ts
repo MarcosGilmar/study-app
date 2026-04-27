@@ -14,7 +14,10 @@ export class Subject extends Entity<SubjectProps> {
     super(props, id);
   }
 
-  static create(props: Optional<SubjectProps, 'createdAt'>, id?: UniqueEntityId) {
+  static create(
+    props: Optional<SubjectProps, 'createdAt'>,
+    id?: UniqueEntityId,
+  ): Subject {
     return new Subject(
       { ...props, createdAt: props.createdAt ?? new Date() },
       id,
@@ -23,5 +26,9 @@ export class Subject extends Entity<SubjectProps> {
 
   get name() {
     return this.props.name;
+  }
+
+  get userId() {
+    return this.props.userId;
   }
 }

@@ -1,10 +1,11 @@
 import { ConflictException } from '@nestjs/common';
 import { Subject } from '../entities/subject';
 import { SubjectsRepository } from '../repositories/subjects-repository';
+import { UniqueEntityId } from 'src/core/entities/unique-entity-id';
 
 interface CreateSubjectUseCaseInput {
   name: string;
-  userId: string;
+  userId: UniqueEntityId;
 }
 
 export class CreateSubjectUseCase {
@@ -15,7 +16,7 @@ export class CreateSubjectUseCase {
       await this.subjectsRepository.findWithSameName(name);
 
     if (subjectWithSameName) {
-      throw new ConflictException('Subjects with the same name');
+      throw new ConflictException('Subjects with the same name'); //Desacoplar dessa camada o Conflict
     }
 
     const subject = Subject.create({
@@ -23,6 +24,6 @@ export class CreateSubjectUseCase {
       userId,
     });
 
-    await this.subjectsRepository.create(subject)
+    await this.subjectsRepository.create(subject);
   }
 }

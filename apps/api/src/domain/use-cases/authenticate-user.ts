@@ -20,7 +20,7 @@ export class AuthenticateUserUseCase {
     const isPasswordValid = await compare(password, user.password);
 
     if (!isPasswordValid) {
-      throw new UnauthorizedException('User credentials do not match');
+      throw new UnauthorizedException('User credentials do not match'); // Desacoplar dessa camada o UnauthorizedException
     }
 
     return {

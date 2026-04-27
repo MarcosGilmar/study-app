@@ -17,10 +17,10 @@ export class PrismaUserMapper {
 
   static toPrisma(user: User) {
     return {
-        id: user.id.toValue(),
-        name: user.name,
-        email: user.email,
-        password: user.password,
-      }
+      id: user.id.toValue(),
+      name: user.name,
+      email: user.email,
+      password: user.password,
+    };
   }
 }

@@ -14,7 +14,10 @@ export class User extends Entity<UserProps> {
     super(props, id);
   }
 
-  static create(props: Optional<UserProps, 'createdAt'>, id?: UniqueEntityId) {
+  static create(
+    props: Optional<UserProps, 'createdAt'>,
+    id?: UniqueEntityId,
+  ): User {
     return new User({ ...props, createdAt: props.createdAt ?? new Date() }, id);
   }
 
