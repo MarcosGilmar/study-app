@@ -1,4 +1,11 @@
-import { Body, Controller, HttpCode, Post, UsePipes } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  Post,
+  UnauthorizedException,
+  UsePipes,
+} from '@nestjs/common';
 import { AuthenticateUserUseCase } from 'src/domain/use-cases/authenticate-user';
 import { ZodValidationPipe } from 'src/infra/http/pipes/zod-validation-pipe';
 import z from 'zod';
@@ -20,10 +27,16 @@ export class AuthenticateController {
   async handle(@Body() body: AuthenticateBodySchema) {
     const { email, password } = body;
 
-    const { accessToken } = await this.authenticateUser.execute({
+    const result = await this.authenticateUser.execute({
       email,
       password,
     });
+
+    if (result.isLeft()) {
+      throw new UnauthorizedException();
+    }
+
+    const { accessToken } = result.value;
 
     return { access_token: accessToken };
   }
