@@ -1,8 +1,7 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id';
 import { CreateSubjectUseCase } from 'src/domain/use-cases/create-subject';
 import { CurrentUser } from 'src/infra/auth/current-user-decorator';
-import { JwtAuthGuard } from 'src/infra/auth/jwt.auth.guard';
 import type { TokenPayloadSchema } from 'src/infra/auth/jwt.strategy';
 import { ZodValidationPipe } from 'src/infra/http/pipes/zod-validation-pipe';
 import z from 'zod';
@@ -14,7 +13,6 @@ const createSubjectBodySchema = z.object({
 type CreateSubjectBodySchema = z.infer<typeof createSubjectBodySchema>;
 
 @Controller('/subjects')
-@UseGuards(JwtAuthGuard)
 export class CreateSubjectController {
   constructor(private createSubject: CreateSubjectUseCase) {}
 
