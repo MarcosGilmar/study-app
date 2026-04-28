@@ -1,6 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { Either, left, right } from 'src/core/either';
 import { HashGenerator } from '../cryptography/hash-generator';
 import { User } from '../entities/user';
+import { UserAlreadyExistsError } from '../errors/user-already-exists-error';
 import { UsersRepository } from '../repositories/users-repository';
 
 interface CreateUserCaseInput {
@@ -8,6 +10,8 @@ interface CreateUserCaseInput {
   email: string;
   password: string;
 }
+
+type CreateUserCaseOutput = Either<UserAlreadyExistsError, void>;
 @Injectable()
 export class CreateUserUseCase {
   constructor(
@@ -15,11 +19,15 @@ export class CreateUserUseCase {
     private hashGenerator: HashGenerator,
   ) {}
 
-  async execute({ name, email, password }: CreateUserCaseInput): Promise<void> {
+  async execute({
+    name,
+    email,
+    password,
+  }: CreateUserCaseInput): Promise<CreateUserCaseOutput> {
     const userWithSameEmail = await this.usersRepository.findByEmail(email);
 
     if (userWithSameEmail) {
-      throw new ConflictException(); //Desacoplar dessa camada o Conflict
+      return left(new UserAlreadyExistsError());
     }
 
     const hashedPassword = await this.hashGenerator.hash(password);
@@ -31,5 +39,7 @@ export class CreateUserUseCase {
     });
 
     await this.usersRepository.create(user);
+
+    return right(undefined);
   }
 }

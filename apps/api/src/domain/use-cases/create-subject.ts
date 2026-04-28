@@ -1,6 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { Either, left, right } from 'src/core/either';
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id';
 import { Subject } from '../entities/subject';
+import { SubjectAlreadyCreatedError } from '../errors/subject-already-created';
 import { SubjectsRepository } from '../repositories/subjects-repository';
 
 interface CreateSubjectUseCaseInput {
@@ -8,16 +10,21 @@ interface CreateSubjectUseCaseInput {
   userId: UniqueEntityId;
 }
 
+type CreateSubjectUseCaseOutput = Either<SubjectAlreadyCreatedError, void>;
+
 @Injectable()
 export class CreateSubjectUseCase {
   constructor(private subjectsRepository: SubjectsRepository) {}
 
-  async execute({ name, userId }: CreateSubjectUseCaseInput) {
+  async execute({
+    name,
+    userId,
+  }: CreateSubjectUseCaseInput): Promise<CreateSubjectUseCaseOutput> {
     const subjectWithSameName =
       await this.subjectsRepository.findWithSameName(name);
 
     if (subjectWithSameName) {
-      throw new ConflictException('Subjects with the same name'); //Desacoplar dessa camada o Conflict
+      return left(new SubjectAlreadyCreatedError());
     }
 
     const subject = Subject.create({
@@ -26,5 +33,7 @@ export class CreateSubjectUseCase {
     });
 
     await this.subjectsRepository.create(subject);
+
+    return right(undefined);
   }
 }

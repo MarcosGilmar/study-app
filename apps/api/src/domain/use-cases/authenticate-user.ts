@@ -1,12 +1,19 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { Either, left, right } from 'src/core/either';
 import { Encrypter } from '../cryptography/encrypter';
 import { HashComparator } from '../cryptography/hash-comparator';
+import { InvalidCredentialsError } from '../errors/invalid-credentials-error';
 import { UsersRepository } from '../repositories/users-repository';
 
 interface AuthenticateUserUseCaseInput {
   email: string;
   password: string;
 }
+
+type AuthenticateUserUseCaseOutput = Either<
+  InvalidCredentialsError,
+  { accessToken: string }
+>;
 
 @Injectable()
 export class AuthenticateUserUseCase {
@@ -16,11 +23,14 @@ export class AuthenticateUserUseCase {
     private encrypter: Encrypter,
   ) {}
 
-  async execute({ email, password }: AuthenticateUserUseCaseInput) {
+  async execute({
+    email,
+    password,
+  }: AuthenticateUserUseCaseInput): Promise<AuthenticateUserUseCaseOutput> {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      throw new UnauthorizedException('User credentials do not match'); // Desacoplar dessa camada o UnauthorizedException
+      return left(new InvalidCredentialsError());
     }
 
     const isPasswordValid = await this.hashComparator.compare(
@@ -29,15 +39,15 @@ export class AuthenticateUserUseCase {
     );
 
     if (!isPasswordValid) {
-      throw new UnauthorizedException('User credentials do not match'); // Desacoplar dessa camada o UnauthorizedException
+      return left(new InvalidCredentialsError());
     }
 
     const accessToken = await this.encrypter.encrypt({
       sub: user.id.toValue(),
     });
 
-    return {
+    return right({
       accessToken,
-    };
+    });
   }
 }
