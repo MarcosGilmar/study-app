@@ -1,4 +1,3 @@
-
 # Study App
 
 Projeto para organizar estudos (monorepo).
@@ -6,14 +5,35 @@ Projeto para organizar estudos (monorepo).
 ## Tecnologias
 
 - **Monorepo:** Turborepo
-- **Frontend:** Next.js (App Router) + React + TailwindCSS + Zustand
-- **Backend:** Nest.js, PrismaORM, PostgreSQL
+- **Frontend:** Next.js (App Router) + React + TailwindCSS
+- **Backend:** NestJS + PrismaORM + PostgreSQL
+- **Auth:** JWT RS256 com Passport
+- **Validação:** Zod
+- **Testes:** Vitest
 - **Linguagem:** TypeScript
 
 ## Estrutura do repositório
 
-- [apps/web](apps/web) — aplicação web (Next.js)
-- [apps/api](apps/api) — API (NestJS)
+```
+/
+├── apps/
+│   ├── api/          — API (NestJS)
+│   └── web/          — Aplicação web (Next.js)
+├── config/
+    ├── eslint-config/      — Configuração ESLint compartilhada
+    └── typescript-config/  — Configuração TypeScript compartilhada
+
+```
+
+## Arquitetura
+
+A API segue os princípios de Clean Architecture, separada em:
+
+- `core/` — utilitários compartilhados (Either, Entity, UniqueEntityId)
+- `domain/` — entidades, repositórios (contratos), use cases e erros do domínio
+- `infra/` — implementações concretas (Prisma, JWT, bcrypt, controllers)
+
+O domínio não depende de nenhum framework ou biblioteca externa — apenas TypeScript puro. A camada de infra é responsável por implementar os contratos definidos no domínio.
 
 ## Como rodar
 
@@ -33,13 +53,13 @@ npm run dev
 
 Este repositório inclui uma configuração `docker-compose.yml` para subir serviços em desenvolvimento.
 
-- Para subir os serviços em background:
+Subir os serviços em background:
 
 ```bash
 docker-compose up -d
 ```
 
-- Para parar e remover containers:
+Parar e remover containers:
 
 ```bash
 docker-compose down
@@ -47,31 +67,49 @@ docker-compose down
 
 O volume do Postgres é persistido em `docker/postgres/data`.
 
-## Prisma (migrations e cliente)
+## Variáveis de ambiente
 
-Este projeto usa Prisma para modelagem e migrações do banco de dados. O esquema está em `apps/api/prisma/schema.prisma` e as migrações em `apps/api/prisma/migrations`.
+Crie `apps/api/.env` com base em `apps/api/.env.example`:
 
-- Gerar o client do Prisma (necessário após alterar o schema):
+```env
+DATABASE_URL=
+JWT_PRIVATE_KEY=
+JWT_PUBLIC_KEY=
+PORT=3333
+```
+
+As chaves JWT devem ser geradas no formato RS256 e codificadas em base64.
+
+## Prisma
+
+O schema está em `apps/api/prisma/schema.prisma` e as migrações em `apps/api/prisma/migrations`.
+
+Gerar o client do Prisma (necessário após alterar o schema):
 
 ```bash
 cd apps/api
 npm run prisma:generate
 ```
 
-- Rodar migrations em desenvolvimento:
+Rodar migrations em desenvolvimento:
 
 ```bash
 cd apps/api
 npm run prisma:migrate:dev
 ```
 
-- Abrir Prisma Studio:
+Abrir Prisma Studio:
 
 ```bash
 cd apps/api
 npm run prisma:studio
 ```
 
-Observações:
-- Crie `apps/api/.env` com base em `apps/api/.env.example`.
-- Se estiver usando o Postgres via `docker-compose`, confirme que o serviço `postgres` está rodando antes de abrir o Studio.
+## Testes
+
+Rodar testes unitários da API:
+
+```bash
+cd apps/api
+npm run test
+```
